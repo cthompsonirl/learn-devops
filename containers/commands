@@ -1,0 +1,48 @@
+- Run - start a container
+	- docker run nginx
+	- append a command
+		- docker run ubuntu sleep 5
+	- give it a name
+		- docker run -d --name webapp nginx:1.14-alpine
+- ps - list containers
+	- docker ps
+	- docker ps -a
+- STOP - stop a container
+	- docker stop silly_sammet
+- stop all containers
+	- docker kill $(docker ps -q)
+- Rm - Remove a container
+	- docker rm silly_sammet
+- remove all containers
+	- docker rm $(docker ps -a -q)
+- Images - List images
+	- docker images
+- rmi - remove images
+	- docker rmi nginx
+- remove all docker images
+	- docker rmi $(docker images -q)
+- Pull - download an image
+	- docker run nginx
+	- docker pull nginx
+- Exec - execute a command
+	- docker exec <id / name> cat /etc/hosts
+- Run - Attach and detach
+	- docker run kodekloud/simple-webapp
+	- docker run -d kodekloud/simple-webapp
+	- docker attack <id>
+- docker exec
+	- show env field within container
+		- docker exec -it webapp env
+- docker login
+	- docker login private-registry.io
+		- docker run private-registry.io/apps/internal-app
+		- docker run -d -p 5000:5000 --name registry registry:2 
+		- docker image tag my-image localhost:5000/my-image 
+		- docker push localhost:5000/my-image 
+		- docker pull localhost:5000/my-image 
+		- docker pull 192.168.56.100:5000/my-image
+- docker network
+	- docker network ls
+	- docker network create --driver=bridge --subnet=182.18.0.1/24 --gateway=182.18.0.1 wp-mysql-network
+	- docker run -d -e MYSQL_ROOT_PASSWORD=db_pass123 --name mysql-db --network wp-mysql-network mysql:5.6
+	- docker run --network=wp-mysql-network -e DB_Host=mysql-db -e DB_Password=db_pass123 -p 38080:8080 --name webapp --link mysql-db:mysql-db -d simple-webapp-mysql
