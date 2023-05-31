@@ -1,2 +1,4 @@
 # learn-devops
-repository to document devops learning material
+This repository is to document my devops journey. I am attempting to keep track of useful links and tidbits and to learn devops with small tasks. Each task should have an associated objective covering a devops related concepts inclusing Containers, Container Orchestration, Infrastructure As Code, Version Control etc
+
+Very much a WIP
