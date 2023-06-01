@@ -1,0 +1,57 @@
+# Detached vs Foreground
+
+docs.docker.com/engine/reference/run
+
+docs.docker.com/engine/reference/commandline/run
+
+Version Stack
+
+Stack	Version
+Docker	20.10.14
+By design, containers started in detached mode exit when the root process used to run the container exits
+
+Detached Mode
+# Note: No --rm option
+❯ docker run -d -p 80:80 nginx service nginx start 
+3fdd6761951aeba2a8936a54a7fea982b1b7073a0d2892cab9a4c095d080900b
+
+# Note the container exited after starting
+❯ docker ps -a                                    
+CONTAINER ID   IMAGE         COMMAND                  CREATED          STATUS                      PORTS     NAMES
+bb962c8e65c9   nginx         "/docker-entrypoint.…"   16 seconds ago   Exited (0) 14 seconds ago             recursing_newton
+
+# Note: We added --rm option
+❯ docker run --rm -d -p 80:80 nginx service nginx start
+0bd599d2dc8816017671eeb5fbc65d7e27ea5e4f611a39464c87d2ce60f08b7e
+
+# The container also exited after being stopped
+❯ docker ps -a                                         
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+❯ 
+
+# You can start an ubuntu container as well in detached mode
+❯ docker run -d ubuntu  /bin/bash
+fb9db1cd53e9cafd2fff47ce4d47dcd811c486fc123e5a85fa9ba00934cbef1c
+
+❯ docker ps -a                   
+CONTAINER ID   IMAGE         COMMAND                  CREATED          STATUS                      PORTS     NAMES
+fb9db1cd53e9   ubuntu        "/bin/bash"              20 seconds ago   Exited (0) 19 seconds ago             quizzical_rosalind
+
+❯ docker run -d ubuntu  sleep 100
+6890d7a505c080ae63a6c52ccd07931f09abe1d189ad7edcb09ab53858c65e36
+
+❯ docker ps -a                   
+CONTAINER ID   IMAGE         COMMAND                  CREATED              STATUS                          PORTS     NAMES
+6890d7a505c0   ubuntu        "sleep 100"              12 seconds ago       Up 12 seconds                             adoring_wilson
+fb9db1cd53e9   ubuntu        "/bin/bash"              About a minute ago   Exited (0) About a minute ago             quizzical_rosalind
+
+Foreground Mode
+In foreground mode (the default when -d is not specified), docker run can start the process in the container and attach the console to the process’s standard input, output, and standard error
+
+For interactive processes (like a shell), you must use -i -t together in order to allocate a tty for the container process
+
+❯ docker run -it ubuntu  /bin/bash              
+root@d9c37bd4b3ec:/# ls
+bin  boot  dev  etc  home  lib  lib32  lib64  libx32  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+root@d9c37bd4b3ec:/# exit
+exit
